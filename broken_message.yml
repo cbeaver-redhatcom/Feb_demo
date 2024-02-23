@@ -1,0 +1,9 @@
+---
+- name: Print EDA Message
+  hosts: localhost
+  gather_facts: false
+  tasks:
+
+    - name: Print EDA Demo Message
+      ansible.builtin.debug:
+        message: "Hello USDA Automation Team!  This message was initiated by EDA Controller."
