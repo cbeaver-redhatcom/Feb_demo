@@ -6,4 +6,4 @@
 
     - name: Print EDA Demo Message
       ansible.builtin.debug:
-        msg: "Hello USDA Automation Team!  This message was initiated by EDA Controller."
+        msg: "Hello {{ _audience }}!  This message was initiated by EDA Controller."
