@@ -16,8 +16,8 @@
           6536
       server_url: "https://10.8.50.34"
       name: "{{ _host_name }}"
-      hostgroup: "{{ _hostgroup | default(true) }}"
+      hostgroup: "{{ _hostgroup | default(omit) }}"
       build: "{{ _build | default(true) }}"
       comment: "{{ _comment }}"
-      state: "{{ _state }}"
+      state: "{{ _state | default("present") }}"
       validate_certs: false 
