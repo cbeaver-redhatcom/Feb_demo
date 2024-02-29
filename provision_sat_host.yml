@@ -18,6 +18,6 @@
       name: "{{ _host_name }}"
       hostgroup: "{{ _hostgroup | default(omit) }}"
       build: "{{ _build | default(true) }}"
-      comment: "{{ _comment }}"
+      comment: "{{ _comment | default(omit) }}"
       state: "{{ _state | default(present) }}"
       validate_certs: false 
