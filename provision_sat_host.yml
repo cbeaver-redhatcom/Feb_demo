@@ -20,4 +20,8 @@
       build: "{{ _build | default(true) }}"
       comment: "{{ _comment | default(omit) }}"
       state: "{{ _state | default(present) }}"
+      location: Demo
+      organization: NEZF
       validate_certs: false 
+
+# Error while performing create on hosts: The following required parameters are missing: host[location_id], host[organization_id]",
