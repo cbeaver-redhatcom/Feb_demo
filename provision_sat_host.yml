@@ -18,13 +18,13 @@
       #name: "cbeaverdemo2.tamlab.rdu2.redhat.com"
       name: "{{ _host_name }}"
       state: present
-      organization: tamlab
-      location: RDU   
-      compute_resource: VMWare
-      compute_profile: cbeaver_VMWare
+      organization: "{{ _sat_organization }}" #tamlab
+      location: "{{ _sat_location }}" #RDU   
+      compute_resource: "{{ _sat_resource }}" #VMWare
+      compute_profile: "{{ _sat_prpofile }}" #cbeaver_VMWare
       content_source: sat6.tamlab.rdu2.redhat.com
       architecture: x86_64
-      operatingsystem: RedHat 9.3 
+      operatingsystem: "{{ _sat_OS }}" #RedHat 9.3 
       validate_certs: false 
       build: true 
       provision_method: image
