@@ -21,7 +21,7 @@
       organization: "{{ _sat_organization }}" #tamlab
       location: "{{ _sat_location }}" #RDU   
       compute_resource: "{{ _sat_resource }}" #VMWare
-      compute_profile: "{{ _sat_prpofile }}" #cbeaver_VMWare
+      compute_profile: "{{ _sat_profile }}" #cbeaver_VMWare
       content_source: sat6.tamlab.rdu2.redhat.com
       architecture: x86_64
       operatingsystem: "{{ _sat_OS }}" #RedHat 9.3 
