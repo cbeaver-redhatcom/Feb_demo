@@ -1,0 +1,20 @@
+---
+- name: Provision host in satellite
+  hosts: localhost 
+  gather_facts: false 
+  tasks:
+
+  - name: "Create a host with build context"
+    redhat.satellite.host:
+      username: "admin"
+      password: "redhat"
+      server_url: "https://sat6.tamlab.rdu2.redhat.com"
+      name: "cbeaverdeamo.tamlab.rdu2.redhat.com"
+      state: present
+      location: RDU #DemoLocation
+      organization: tamlab
+      mac: 00:50:56:af:5f:68
+      architecture: x86_64
+      operatingsystem: RedHat 9.2 
+      validate_certs: false 
+

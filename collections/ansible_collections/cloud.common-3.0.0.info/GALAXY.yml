@@ -1,0 +1,45 @@
+download_url: https://console.redhat.com/api/automation-hub/v3/plugin/ansible/content/published/collections/artifacts/cloud-common-3.0.0.tar.gz
+format_version: 1.0.0
+name: common
+namespace: cloud
+server: https://console.redhat.com/api/automation-hub/content/published/
+signatures:
+- pubkey_fingerprint: 39B5D759361A97464C564A8FE1A4BD708A828AAD
+  pulp_created: '2023-11-20T04:01:36.414867Z'
+  signature: '-----BEGIN PGP SIGNATURE-----
+
+    Version: GnuPG v1
+
+
+    iQIcBAABCAAGBQJlWtoTAAoJEOGkvXCKgoqt/vkP+wT4epvgRva6AL1Wr2NBE5u/
+
+    mLQ9vLjrh7TKCoZqSRzOfNJ5XRR74YHQmP8hISIPYJogxneRQPYAUmCxCIKFexFW
+
+    jkb6rUyA3RsVYXtbyU2+OPre5E+AkLIoNXcf9WvtrT1rjJmcgG19RZ8oi8NxSV3g
+
+    bpModiTr+AEnsu4fHwv96B25c4xBrzoghkOT+l73lM6xyyBVKjfV2wHBF3+D0lEf
+
+    5LR+uz/YdZD7m4HpyfsDE59OMlXrvQwVv1z6aeplcRdlKmEh9+CCEdrZJz1mmmyW
+
+    oWrb22VFMpKDEk09up+V6z8/fm194tSowJbOpFmXNDRH1MKQFua4glp/Wg1/zOZr
+
+    cvsB3zcD84Ftrtjc2KntSJy/tyXzR0poEc27SnAI76o/idsZnBpLMB7yJ8BS/cvF
+
+    bEPVqDEUH6NzAPSuxgmWhl1PpVt2BDg8vNgSKJO0CYNCADUKshfBSnLKakQx9JXL
+
+    Vu0e3zqw8SB7FEJJcVnewm5micr1hbStUGUQUqqP4egUr+hBPHElMEc1UZRK1t5O
+
+    4G3EhsakYHQm3mmlmCO5vnKdCLGhVxQbPhgayTlIE7dh6uQuJx/VySvHKl3cOmQz
+
+    oSzNTWtB5P6LZvlzuCv9R17AI6mwOg/ugTQkpJwBgxGTtSk6HOE5ijj39r8fOVoo
+
+    ritQcwWjVF8nvIQfhRBG
+
+    =bUr9
+
+    -----END PGP SIGNATURE-----
+
+    '
+  signing_service: null
+version: 3.0.0
+version_url: /api/automation-hub/content/published/v3/plugin/ansible/content/published/collections/index/cloud/common/versions/3.0.0/

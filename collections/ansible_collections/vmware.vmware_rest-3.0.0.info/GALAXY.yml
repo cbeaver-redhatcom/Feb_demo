@@ -1,0 +1,45 @@
+download_url: https://console.redhat.com/api/automation-hub/v3/plugin/ansible/content/published/collections/artifacts/vmware-vmware_rest-3.0.0.tar.gz
+format_version: 1.0.0
+name: vmware_rest
+namespace: vmware
+server: https://console.redhat.com/api/automation-hub/content/published/
+signatures:
+- pubkey_fingerprint: 39B5D759361A97464C564A8FE1A4BD708A828AAD
+  pulp_created: '2023-11-27T18:27:11.422989Z'
+  signature: '-----BEGIN PGP SIGNATURE-----
+
+    Version: GnuPG v1
+
+
+    iQIcBAABCAAGBQJlZN90AAoJEOGkvXCKgoqtVOwP/3i7E/OEP5Nah4sorEvIrLJX
+
+    86XUI0zxJ/hbOxeFsyF6q4TDqGskJB+PAKQMCHigLnKHUcbS55RUwWM5bJIJpWFt
+
+    gTqmWaQrc/erERtTyEv7iCIlFVoIN08QBxTS/fggwxIK9AbZBAeBfIhcZArcIT0C
+
+    aAg5bOD4XHk6vVLfINgnrJZs8LCwFHoVk7iyi7+282k/mYopaiQC/DqRQX5u8GJd
+
+    pIm6qGZFwJtmtrf20Fg8a7x5nTb7c4Baam7o/DhrnkeQBu0yAx4msAcalHYgaF6G
+
+    FJJCYxcce0SQSFZSV5wbhKuPEtj9r99L4xiY7+QuJs8DSwH/uB48Xk6K2sxNPwli
+
+    tYIjQoquWD/8p4OpMXzaBcqcuSNzdNVDa8N7lKOLBwSpOA/IjYCZ9uOB8VUHw/uF
+
+    LzWZWaVRZ9fOw0DFTSBKMDoASU0eePKXuJINJuSAH/QzrtruGPrIxzt+Gq7JG2fj
+
+    /lG2Yh22Tg8Taxc6DfSpPYIJDqvX0WgJAIfq4ljLn39tSp+ujeWEUhAv/rW2gDug
+
+    Z4t6ztl6rcmXv11TKZ0r/wuAyHAQyG+YmYuRPojgD74AkOG9fYC30bYIK+OAZbti
+
+    /nEFYxudFAR8yxkxeHks+xMyj4OrYKw+oAx+naiFldAVVgTYqhnor8jKNLDG0z0i
+
+    bVxjbNKUYm1J9WFy7Yy5
+
+    =cQVr
+
+    -----END PGP SIGNATURE-----
+
+    '
+  signing_service: null
+version: 3.0.0
+version_url: /api/automation-hub/content/published/v3/plugin/ansible/content/published/collections/index/vmware/vmware_rest/versions/3.0.0/

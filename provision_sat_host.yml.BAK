@@ -1,0 +1,27 @@
+---
+- name: Provision host in satellite
+  hosts: localhost 
+  gather_facts: false 
+  tasks:
+
+  - name: "Create a host with build context"
+    redhat.satellite.host:
+      username: "admin"
+      password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          34326662646634383735353463616165346665616539613165383834366637633236323938356235
+          3532333636616161613961623335313165383538373766360a353864323561303734306532336334
+          65636466646338613734343135346232316164633361306265373837353131326266653738373663
+          6265383330336536640a383535376461666565313461356431326532373263656631316263333864
+          6536
+      server_url: "https://nezf-satellite.nezf.tamlab.rdu2.redhat.com"
+      name: "{{ _host_name }}"
+      hostgroup: "{{ _hostgroup | default(omit) }}"
+      build: "{{ _build | default(true) }}"
+      comment: "{{ _comment | default(omit) }}"
+      state: "{{ _state | default(present) }}"
+      location: Demo
+      organization: NEZF
+      validate_certs: false 
+
+# Error while performing create on hosts: The following required parameters are missing: host[location_id], host[organization_id]",
