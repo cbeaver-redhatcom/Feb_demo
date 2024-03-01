@@ -15,7 +15,8 @@
           3339633762646466360a616334373065353632636461643931663365376162333564343032613337
           3266
       server_url: "https://sat6.tamlab.rdu2.redhat.com"
-      name: "cbeaverdemo2.tamlab.rdu2.redhat.com"
+      #name: "cbeaverdemo2.tamlab.rdu2.redhat.com"
+      name: "{{ _host_name }}"
       state: present
       organization: tamlab
       location: RDU   
