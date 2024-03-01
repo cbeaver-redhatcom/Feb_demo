@@ -7,14 +7,21 @@
   - name: "Create a host with build context"
     redhat.satellite.host:
       username: "admin"
-      password: "redhat"
+      password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          62353863333262316164633265383561366438306433643666353161306664616337353766636464
+          3039626533613465663466363937303637396466333630310a613337303035316661663933306566
+          36633362646438303235656634656262636538383666303531383139393735333366393866346139
+          3339633762646466360a616334373065353632636461643931663365376162333564343032613337
+          3266
       server_url: "https://sat6.tamlab.rdu2.redhat.com"
       name: "cbeaverdeamo.tamlab.rdu2.redhat.com"
       state: present
-      location: RDU #DemoLocation
+      location: DemoLocation
       organization: tamlab
       mac: 00:50:56:af:5f:68
       architecture: x86_64
       operatingsystem: RedHat 9.2 
       validate_certs: false 
 
+        #fatal: [cbeaver-thinkpadt14sgen2i.remote.csb]: FAILED! => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"}, "changed": false, "error": {"errors": {"architecture_id": ["can't be blank"], "interfaces.mac": ["can't be blank"], "operatingsystem_id": ["can't be blank"]}, "full_messages": ["Mac can't be blank", "Operatingsystem can't be blank", "Architecture can't be blank"], "id": null}, "msg": "Error while performing create on hosts: 422 Client Error: Unprocessable Entity for url: https://sat6.tamlab.rdu2.********.com/api/hosts"}

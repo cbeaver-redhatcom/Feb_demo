@@ -23,7 +23,6 @@
       compute_resource: VMWare
       compute_profile: cbeaver_VMWare
       content_source: sat6.tamlab.rdu2.redhat.com
-      #mac: 00:50:56:af:5f:99
       architecture: x86_64
       operatingsystem: RedHat 9.3 
       validate_certs: false 
