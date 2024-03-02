@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: MIT
+---
+- name: Deploy and start systemd unit
+  hosts: all
+  vars:
+    systemd_unit_files: ['foo.service']
+    systemd_started_units: ['foo.service']
+    systemd_enabled_units: ['foo.service']
+  roles:
+    - redhat.rhel_system_roles.systemd

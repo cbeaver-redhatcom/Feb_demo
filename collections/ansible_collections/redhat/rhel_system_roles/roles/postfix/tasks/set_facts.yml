@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: BSD-3-Clause
+---
+- name: Ensure ansible_facts used by role are present
+  setup:
+    gather_subset: "{{ __postfix_required_facts_subsets }}"
+  when: __postfix_required_facts | difference(ansible_facts.keys() | list) | length > 0

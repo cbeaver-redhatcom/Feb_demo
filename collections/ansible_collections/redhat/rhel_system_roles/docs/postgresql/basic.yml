@@ -1,0 +1,7 @@
+---
+- name: Run role with minimal parameters
+  hosts: localhost
+  vars:
+    postgresql_version: "10"
+  roles:
+    - redhat.rhel_system_roles.postgresql

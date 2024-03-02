@@ -18,3 +18,5 @@
   - name: Print package facts 
     ansible.builtin.debug:
       var: ansible_facts.packages
+
+  - name: Demo leveraging facts 

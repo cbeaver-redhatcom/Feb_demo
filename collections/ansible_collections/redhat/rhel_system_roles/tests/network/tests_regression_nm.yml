@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: BSD-3-Clause
+---
+# set network provider and gather facts
+- hosts: all
+  name: Run playbook 'playbooks/tests_checkpoint_cleanup.yml' with nm as provider
+  tasks:
+    - name: Include the task 'el_repo_setup.yml'
+      include_tasks: tasks/el_repo_setup.yml
+
+    - name: Set network provider to 'nm'
+      set_fact:
+        network_provider: nm
+    - name: Install NetworkManager
+      package:
+        name: NetworkManager
+        state: present
+    - name: Get NetworkManager package info
+      yum:
+        list: NetworkManager
+      register: networkmanager_info
+    - name: Get NetworkManager version
+      set_fact:
+        networkmanager_version: "{{ networkmanager_info.results | selectattr('yumstate', 'match', '^installed$') | map(attribute='version') | list | first }}"
+
+# workaround for: https://github.com/ansible/ansible/issues/27973
+# There is no way in Ansible to abort a playbook hosts with specific OS
+# releases Therefore we include the playbook with the tests only if the hosts
+# would support it.
+# The test requires NetworkManager, therefore it cannot run on RHEL/CentOS 6
+- name: Import the playbook 'playbooks/tests_checkpoint_cleanup.yml'
+  import_playbook: playbooks/tests_checkpoint_cleanup.yml
+  when:
+    - ansible_distribution_major_version != '6'
+  # The test depends on behavior that is only visible with newer NM
+    - networkmanager_version is version('1.22.0', '>=')
+    - ansible_distribution != 'RedHat' or ansible_distribution_major_version | int < 9

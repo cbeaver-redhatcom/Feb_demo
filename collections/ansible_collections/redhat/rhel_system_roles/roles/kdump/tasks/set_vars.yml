@@ -1,0 +1,5 @@
+---
+- name: Ensure ansible_facts used by role
+  setup:
+    gather_subset: "{{ __kdump_required_facts_subsets }}"
+  when: __kdump_required_facts | difference(ansible_facts.keys() | list) | length > 0
