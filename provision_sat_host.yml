@@ -30,6 +30,7 @@
       provision_method: image
       compute_attributes:
         network: TAMLAB_193 
+        start: "1"
       image: rhel9_blank      
 
 
