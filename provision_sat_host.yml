@@ -15,8 +15,7 @@
           3339633762646466360a616334373065353632636461643931663365376162333564343032613337
           3266
       server_url: "https://sat6.tamlab.rdu2.redhat.com"
-      #name: "cbeaverdemo2.tamlab.rdu2.redhat.com"
-      name: "{{ _host_name }}"
+      name: "{{ _host_name }}" #cbeaverdemo2.tamlab.rdu2.redhat.com
       state: present
       organization: "{{ _sat_organization }}" #tamlab
       location: "{{ _sat_location }}" #RDU   
@@ -32,14 +31,3 @@
         network: TAMLAB_193 
         start: "1"
       image: rhel9_blank      
-
-
-      # server_url: "https://sat6.tamlab.rdu2.redhat.com"
-      # name: "{{ _host_name }}"
-      # hostgroup: "{{ _hostgroup | default(omit) }}"
-      # build: "{{ _build | default(false) }}"
-      # comment: "{{ _comment | default(omit) }}"
-      # state: "{{ _state | default('present') }}"
-      # location: Demo
-      # organization: NEZF
-      # validate_certs: false 
