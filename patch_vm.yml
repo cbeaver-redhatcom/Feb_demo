@@ -1,0 +1,65 @@
+---
+- name: Patch server
+  hosts: all
+  become: true
+  tasks:
+
+  # - name: "INCLUDES | Include vars"
+  #   include_vars: group_vars/vcenter.yml
+  #   no_log: true
+
+  # - name: Create a snapshot
+  #   community.vmware.vmware_guest_snapshot:
+  #     hostname: "{{ vcenter_host }}"
+  #     username: "{{ vcenter_username }}"
+  #     password: "{{ vcenter_password }}"
+  #     datacenter: "My Datacenter"
+  #     folder: "/My Datacenter/"
+  #     name: "{{ ansible_facts.fqdn }}"
+  #     state: present
+  #     snapshot_name: "ansible_snapshot.{{ ansible_facts.hostname }}.{{ mydate }}"
+  #     description: ansible_snapshot
+  #   delegate_to: localhost
+
+    - name: Stop necessary service(s)
+      ansible.builtin.systemd:
+        state: stopped 
+        name: "{{ item }}"
+      loop: "{{ stop_daemons }}"
+
+    - name: Upgrade all packages (Major Release 8+)
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+      when: ansible_facts.distribution_major_version | int >= 8
+
+    - name: Upgrade all packages (Major Release 7 & under)
+      ansible.builtin.yum:
+        name: "*"
+        state: latest
+      when: ansible_facts.distribution_major_version | int < 7
+    
+    - name: Reboot (5 min timeout)
+      ansible.builtin.reboot:
+        reboot_timeout: 1800
+      register: reboot 
+
+    - name: Start necessary service(s)
+      ansible.builtin.systemd:
+        state: started
+        name: "{{ item }}"
+      loop: "{{ stop_daemons }}"
+
+  # - name: Remove a snapshot
+  #   community.vmware.vmware_guest_snapshot:
+  #     hostname: "{{ vcenter_host }}"
+  #     username: "{{ vcenter_username }}"
+  #     password: "{{ vcenter_password }}"
+  #     datacenter: "My Datacenter"
+  #     folder: "/My Datacenter/"
+  #     name: "{{ ansible_facts.fqdn }}"
+  #     state: absent
+  #     snapshot_name: "ansible_snapshot.{{ ansible_facts.hostname }}.{{ mydate }}"
+  #     description: ansible_snapshot
+  #   delegate_to: localhost
+  #   when: reboot.rc == 0
