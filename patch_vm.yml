@@ -25,7 +25,7 @@
       ansible.builtin.systemd:
         state: stopped 
         name: "{{ item }}"
-      loop: "{{ stop_daemons | default(omit) }}"
+      loop: "{{ stop_daemons | default([]]) }}"
 
     - name: Upgrade all packages (Major Release 8+)
       ansible.builtin.dnf:
@@ -48,7 +48,7 @@
       ansible.builtin.systemd:
         state: started
         name: "{{ item }}"
-      loop: "{{ stop_daemons | default(omit) }}"
+      loop: "{{ stop_daemons | default([]]) }}"
 
   # - name: Remove a snapshot
   #   community.vmware.vmware_guest_snapshot:
