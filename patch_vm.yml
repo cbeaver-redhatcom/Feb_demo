@@ -17,7 +17,7 @@
   #     folder: "/My Datacenter/"
   #     name: "{{ ansible_facts.fqdn }}"
   #     state: present
-  #     snapshot_name: "ansible_snapshot.{{ ansible_facts.hostname }}.{{ mydate }}"
+  #     snapshot_name: "ansible_snapshot.{{ ansible_facts.hostname }}.{{ ansible_facts.date_time.date }}"
   #     description: ansible_snapshot
   #   delegate_to: localhost
 
@@ -59,7 +59,7 @@
   #     folder: "/My Datacenter/"
   #     name: "{{ ansible_facts.fqdn }}"
   #     state: absent
-  #     snapshot_name: "ansible_snapshot.{{ ansible_facts.hostname }}.{{ mydate }}"
+  #     snapshot_name: "ansible_snapshot.{{ ansible_facts.hostname }}.{{ ansible_facts.date_time.date }}"
   #     description: ansible_snapshot
   #   delegate_to: localhost
   #   when: reboot.rc == 0
