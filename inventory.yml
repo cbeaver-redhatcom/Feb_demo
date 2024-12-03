@@ -6,12 +6,23 @@
 
     - name: Add inventory
       ansible.controller.inventory:
-        #controller_host: "containerizedaap.beaverdam.com:8443"
         controller_host: "controller.beaverdam.com"
-        #controller_username: "admin"
-        #controller_password: "redhat"
         name: "Test Inventory"
         description: "Our Test Cloud Servers"
         organization: "Default"
         state: present
         validate_certs: false
+
+- name: test ansible.controller.host
+  hosts: localhost
+  gather_facts: false
+  tasks:
+
+    - name: Add host
+      ansible.controller.host:
+        name: localhost
+        description: "Local Host Group"
+        inventory: "Test Inventory"
+        state: present
+        variables:
+          example_var: 123
