@@ -6,7 +6,9 @@
 
     - name: Add inventory
       ansible.controller.inventory:
-        controller_host: "containerizedaap.beaverdam.com"
+        controller_host: "containerizedaap.beaverdam.com:8443"
+        controller_username: "admin"
+        controller_password: "redhat"
         name: "Test Inventory"
         description: "Our Test Cloud Servers"
         organization: 1
