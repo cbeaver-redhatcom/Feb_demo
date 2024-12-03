@@ -1,0 +1,22 @@
+---
+galaxy_info:
+  author: Sean Sullivan
+  description: Role to restore the Ansible Automation Platform
+  company: Red Hat
+
+  license: MIT
+
+  min_ansible_version: "2.12"
+
+  platforms:
+    - name: EL
+      versions:
+        - "8"
+
+  galaxy_tags:
+    - linux
+    - system
+    - ansible
+
+dependencies: []
+...

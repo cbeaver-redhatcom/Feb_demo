@@ -1,0 +1,11 @@
+---
+- name: Provision host in satellite
+  hosts: localhost 
+  gather_facts: false 
+#  roles:
+#    - gina 
+  tasks:
+
+    - name: blah
+      ansible.builtin.include_role:
+        name: gina 

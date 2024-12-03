@@ -1,0 +1,82 @@
+---
+- name: Ensure OpenShift host variable is set (block)
+  block:
+    - name: Ensure OpenShift host variable is set
+      ansible.builtin.assert:
+        that:
+          - aap_ocp_install_connection['host'] is defined
+          - aap_ocp_install_connection['host'] | default("", true) | length > 0
+        quiet: true
+  rescue:
+    - name: Update validation errors fact - host
+      ansible.builtin.set_fact:
+        __aap_ocp_install_prevalidate_errors: >
+          {{ __aap_ocp_install_prevalidate_errors + ["aap_ocp_install_connection['host'] must be set"] }}
+
+- name: Ensure OpenShift username variable is set (block)
+  block:
+    - name: Ensure OpenShift username variable is set
+      ansible.builtin.assert:
+        that:
+          - aap_ocp_install_connection['username'] is defined
+          - aap_ocp_install_connection['username'] | default("", true) | length > 0
+        quiet: true
+  rescue:
+    - name: Update validation errors fact - username
+      ansible.builtin.set_fact:
+        __aap_ocp_install_prevalidate_errors: >
+          {{ __aap_ocp_install_prevalidate_errors + ["aap_ocp_install_connection['username'] must be set"] }}
+
+- name: Ensure OpenShift password variable is set (block)
+  block:
+    - name: Ensure OpenShift password variable is set
+      ansible.builtin.assert:
+        that:
+          - aap_ocp_install_connection['password'] is defined
+          - aap_ocp_install_connection['password'] | default("", true) | length > 0
+        quiet: true
+  rescue:
+    - name: Update validation errors fact - password
+      ansible.builtin.set_fact:
+        __aap_ocp_install_prevalidate_errors: >
+          {{ __aap_ocp_install_prevalidate_errors + ["aap_ocp_install_connection['password'] must be set"] }}
+
+- name: Ensure OpenShift namespace variable is set (block)
+  block:
+    - name: Ensure OpenShift namespace variable is set
+      ansible.builtin.assert:
+        that:
+          - aap_ocp_install_namespace | default("", true) | regex_search('^[a-z0-9]([-a-z0-9]*[a-z0-9])?$')
+        quiet: true
+  rescue:
+    - name: Update validation errors fact - namespace
+      ansible.builtin.set_fact:
+        __aap_ocp_install_prevalidate_errors: >
+          {{ __aap_ocp_install_prevalidate_errors + ["aap_ocp_install_namespace must be a lowercase RFC 1123 label consisting of lower case alphanumeric characters or '-', and must start and end with an alphanumeric character (e.g. 'my-name',  or '123-abc'"] }}
+
+- name: Ensure operator variables are set
+  ansible.builtin.include_tasks:
+    file: pre-validate-operator.yml
+  when:
+    - ( 'operator' in ansible_run_tags ) or ( 'all' in ansible_run_tags and aap_ocp_install_operator is defined )
+
+- name: Ensure controller variables are set
+  ansible.builtin.include_tasks:
+    file: pre-validate-controller.yml
+  when:
+    - ( 'controller' in ansible_run_tags ) or ( 'all' in ansible_run_tags and aap_ocp_install_controller is defined )
+
+- name: Ensure hub variables are set
+  ansible.builtin.include_tasks:
+    file: pre-validate-hub.yml
+  when:
+    - ( 'hub' in ansible_run_tags ) or ( 'all' in ansible_run_tags and aap_ocp_install_hub is defined )
+
+- name: Ensure no validation errors found
+  ansible.builtin.debug:
+    msg:
+      - "The following errors must be fixed to continue:"
+      - "{{ __aap_ocp_install_prevalidate_errors }}"
+  failed_when: (__aap_ocp_install_prevalidate_errors | length) > 0
+  when: (__aap_ocp_install_prevalidate_errors | length) > 0
+...

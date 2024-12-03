@@ -1,0 +1,8 @@
+download_url: https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/artifacts/infra-aap_utilities-2.4.0.tar.gz
+format_version: 1.0.0
+name: aap_utilities
+namespace: infra
+server: https://galaxy.ansible.com/api/
+signatures: []
+version: 2.4.0
+version_url: /api/v3/plugin/ansible/content/published/collections/index/infra/aap_utilities/versions/2.4.0/
