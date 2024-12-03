@@ -17,7 +17,7 @@ import time
 import re
 from json import loads, dumps
 from os.path import isfile, expanduser, split, join, exists, isdir
-from os import access, R_OK, getcwd, environ, getenv
+from os import access, R_OK, getcwd, environ
 
 
 try:
@@ -148,10 +148,9 @@ class ControllerModule(AnsibleModule):
         # Make sure we start with /api/vX
         if not endpoint.startswith("/"):
             endpoint = "/{0}".format(endpoint)
-        hostname_prefix = self.url_prefix.rstrip("/")
-        api_path = self.api_path()
-        if not endpoint.startswith(hostname_prefix + api_path):
-            endpoint = hostname_prefix + f"{api_path}v2{endpoint}"
+        prefix = self.url_prefix.rstrip("/")
+        if not endpoint.startswith(prefix + "/api/"):
+            endpoint = prefix + "/api/v2{0}".format(endpoint)
         if not endpoint.endswith('/') and '?' not in endpoint:
             endpoint = "{0}/".format(endpoint)
 
@@ -292,7 +291,7 @@ class ControllerModule(AnsibleModule):
 class ControllerAPIModule(ControllerModule):
     # TODO: Move the collection version check into controller_module.py
     # This gets set by the make process so whatever is in here is irrelevant
-    _COLLECTION_VERSION = "4.6.2"
+    _COLLECTION_VERSION = "4.5.12"
     _COLLECTION_TYPE = "controller"
     # This maps the collections type (awx/tower) to the values returned by the API
     # Those values can be found in awx/api/generics.py line 204
@@ -505,18 +504,13 @@ class ControllerAPIModule(ControllerModule):
 
         try:
             response = self.session.open(
-                method, url.geturl(),
-                headers=headers,
-                timeout=self.request_timeout,
-                validate_certs=self.verify_ssl,
-                follow_redirects=True,
-                data=data
+                method, url.geturl(), headers=headers, timeout=self.request_timeout, validate_certs=self.verify_ssl, follow_redirects=True, data=data
             )
-        except (SSLValidationError) as ssl_err:
+        except SSLValidationError as ssl_err:
             self.fail_json(msg="Could not establish a secure connection to your host ({1}): {0}.".format(url.netloc, ssl_err))
-        except (ConnectionError) as con_err:
+        except ConnectionError as con_err:
             self.fail_json(msg="There was a network error of some kind trying to connect to your host ({1}): {0}.".format(url.netloc, con_err))
-        except (HTTPError) as he:
+        except HTTPError as he:
             # Sanity check: Did the server send back some kind of internal error?
             if he.code >= 500:
                 self.fail_json(msg='The host sent back a server error ({1}): {0}. Please check the logs and try again later'.format(url.path, he))
@@ -525,18 +519,7 @@ class ControllerAPIModule(ControllerModule):
                 self.fail_json(msg='Invalid authentication credentials for {0} (HTTP 401).'.format(url.path))
             # Sanity check: Did we get a forbidden response, which means that the user isn't allowed to do this? Report that.
             elif he.code == 403:
-                # Hack: Tell the customer to use the platform supported collection when interacting with Org, Team, User Controller endpoints
-                err_msg = he.fp.read().decode('utf-8')
-                try:
-                    # Defensive coding. Handle json responses and non-json responses
-                    err_msg = loads(err_msg)
-                    err_msg = err_msg['detail']
-                # JSONDecodeError only available on Python 3.5+
-                except ValueError:
-                    pass
-                prepend_msg = " Use the collection ansible.platform to modify resources Organization, User, or Team." if (
-                    "this resource via the platform ingress") in err_msg else ""
-                self.fail_json(msg="You don't have permission to {1} to {0} (HTTP 403).{2}".format(url.path, method, prepend_msg))
+                self.fail_json(msg="You don't have permission to {1} to {0} (HTTP 403).".format(url.path, method))
             # Sanity check: Did we get a 404 response?
             # Requests with primary keys will return a 404 if there is no response, and we want to consistently trap these.
             elif he.code == 404:
@@ -562,7 +545,7 @@ class ControllerAPIModule(ControllerModule):
                 pass
             else:
                 self.fail_json(msg="Unexpected return code when calling {0}: {1}".format(url.geturl(), he))
-        except (Exception) as e:
+        except Exception as e:
             self.fail_json(msg="There was an unknown error when trying to connect to {2}: {0} {1}".format(type(e).__name__, e, url.geturl()))
 
         if not self.version_checked:
@@ -599,14 +582,14 @@ class ControllerAPIModule(ControllerModule):
         response_body = ''
         try:
             response_body = response.read()
-        except (Exception) as e:
+        except Exception as e:
             self.fail_json(msg="Failed to read response body: {0}".format(e))
 
         response_json = {}
         if response_body and response_body != '':
             try:
                 response_json = loads(response_body)
-            except (Exception) as e:
+            except Exception as e:
                 self.fail_json(msg="Failed to parse the response json: {0}".format(e))
 
         if PY2:
@@ -614,14 +597,6 @@ class ControllerAPIModule(ControllerModule):
         else:
             status_code = response.status
         return {'status_code': status_code, 'json': response_json}
-
-    def api_path(self):
-
-        default_api_path = "/api/"
-        if self._COLLECTION_TYPE != "awx":
-            default_api_path = "/api/controller/"
-        prefix = getenv('CONTROLLER_OPTIONAL_API_URLPATTERN_PREFIX', default_api_path)
-        return prefix
 
     def authenticate(self, **kwargs):
         if self.username and self.password:
@@ -633,7 +608,7 @@ class ControllerAPIModule(ControllerModule):
                 "scope": "write",
             }
             # Preserve URL prefix
-            endpoint = self.url_prefix.rstrip('/') + f'{self.api_path()}v2/tokens/'
+            endpoint = self.url_prefix.rstrip('/') + '/api/v2/tokens/'
             # Post to the tokens endpoint with baisc auth to try and get a token
             api_token_url = (self.url._replace(path=endpoint)).geturl()
 
@@ -656,7 +631,7 @@ class ControllerAPIModule(ControllerModule):
                 except Exception as e:
                     resp = 'unknown {0}'.format(e)
                 self.fail_json(msg='Failed to get token: {0}'.format(he), response=resp)
-            except (Exception) as e:
+            except Exception as e:
                 # Sanity check: Did the server send back some kind of internal error?
                 self.fail_json(msg='Failed to get token: {0}'.format(e))
 
@@ -666,13 +641,13 @@ class ControllerAPIModule(ControllerModule):
                 response_json = loads(token_response)
                 self.oauth_token_id = response_json['id']
                 self.oauth_token = response_json['token']
-            except (Exception) as e:
+            except Exception as e:
                 self.fail_json(msg="Failed to extract token information from login response: {0}".format(e), **{'response': token_response})
 
         # If we have neither of these, then we can try un-authenticated access
         self.authenticated = True
 
-    def delete_if_needed(self, existing_item, item_type=None, on_delete=None, auto_exit=True):
+    def delete_if_needed(self, existing_item, on_delete=None, auto_exit=True):
         # This will exit from the module on its own.
         # If the method successfully deletes an item and on_delete param is defined,
         #   the on_delete parameter will be called as a method pasing in this object and the json from the response
@@ -684,9 +659,8 @@ class ControllerAPIModule(ControllerModule):
             # If we have an item, we can try to delete it
             try:
                 item_url = existing_item['url']
+                item_type = existing_item['type']
                 item_id = existing_item['id']
-                if not item_type:
-                    item_type = existing_item['type']
                 item_name = self.get_item_name(existing_item, allow_unknown=True)
             except KeyError as ke:
                 self.fail_json(msg="Unable to process delete of item due to missing data {0}".format(ke))
@@ -928,7 +902,7 @@ class ControllerAPIModule(ControllerModule):
                     return True
         return False
 
-    def update_if_needed(self, existing_item, new_item, item_type=None, on_update=None, auto_exit=True, associations=None):
+    def update_if_needed(self, existing_item, new_item, on_update=None, auto_exit=True, associations=None):
         # This will exit from the module on its own
         # If the method successfully updates an item and on_update param is defined,
         #   the on_update parameter will be called as a method pasing in this object and the json from the response
@@ -942,8 +916,7 @@ class ControllerAPIModule(ControllerModule):
             # If we have an item, we can see if it needs an update
             try:
                 item_url = existing_item['url']
-                if not item_type:
-                    item_type = existing_item['type']
+                item_type = existing_item['type']
                 if item_type == 'user':
                     item_name = existing_item['username']
                 elif item_type == 'workflow_job_template_node':
@@ -1002,17 +975,8 @@ class ControllerAPIModule(ControllerModule):
     def create_or_update_if_needed(
         self, existing_item, new_item, endpoint=None, item_type='unknown', on_create=None, on_update=None, auto_exit=True, associations=None
     ):
-        # Remove boolean values of certain specific types
-        # this is needed so that boolean fields will not get a false value when not provided
-        for key in list(new_item.keys()):
-            if key in self.argument_spec:
-                param_spec = self.argument_spec[key]
-                if 'type' in param_spec and param_spec['type'] == 'bool':
-                    if new_item[key] is None:
-                        new_item.pop(key)
-
         if existing_item:
-            return self.update_if_needed(existing_item, new_item, item_type=item_type, on_update=on_update, auto_exit=auto_exit, associations=associations)
+            return self.update_if_needed(existing_item, new_item, on_update=on_update, auto_exit=auto_exit, associations=associations)
         else:
             return self.create_if_needed(
                 existing_item, new_item, endpoint, on_create=on_create, item_type=item_type, auto_exit=auto_exit, associations=associations
@@ -1022,7 +986,7 @@ class ControllerAPIModule(ControllerModule):
         if self.authenticated and self.oauth_token_id:
             # Attempt to delete our current token from /api/v2/tokens/
             # Post to the tokens endpoint with baisc auth to try and get a token
-            endpoint = self.url_prefix.rstrip('/') + f'{self.api_path()}v2/tokens/{self.oauth_token_id}/'
+            endpoint = self.url_prefix.rstrip('/') + '/api/v2/tokens/{0}/'.format(self.oauth_token_id)
             api_token_url = (self.url._replace(path=endpoint, query=None)).geturl()  # in error cases, fail_json exists before exception handling
 
             try:
@@ -1044,7 +1008,7 @@ class ControllerAPIModule(ControllerModule):
                 except Exception as e:
                     resp = 'unknown {0}'.format(e)
                 self.warn('Failed to release token: {0}, response: {1}'.format(he, resp))
-            except (Exception) as e:
+            except Exception as e:
                 # Sanity check: Did the server send back some kind of internal error?
                 self.warn('Failed to release token {0}: {1}'.format(self.oauth_token_id, e))
 
@@ -1058,10 +1022,7 @@ class ControllerAPIModule(ControllerModule):
         # Grab our start time to compare against for the timeout
         start = time.time()
         result = self.get_endpoint(url)
-        wait_on_field = 'event_processing_finished'
-        if wait_on_field not in result['json']:
-            wait_on_field = 'finished'
-        while not result['json'][wait_on_field]:
+        while not result['json']['finished']:
             # If we are past our time out fail with a message
             if timeout and timeout < time.time() - start:
                 # Account for Legacy messages

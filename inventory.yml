@@ -8,8 +8,8 @@
       ansible.controller.inventory:
         #controller_host: "containerizedaap.beaverdam.com:8443"
         controller_host: "controller.beaverdam.com"
-        controller_username: "admin"
-        controller_password: "redhat"
+        #controller_username: "admin"
+        #controller_password: "redhat"
         name: "Test Inventory"
         description: "Our Test Cloud Servers"
         organization: "Default"

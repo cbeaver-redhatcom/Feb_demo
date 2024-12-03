@@ -1,0 +1,45 @@
+download_url: https://console.redhat.com/api/automation-hub/v3/plugin/ansible/content/published/collections/artifacts/ansible-controller-4.5.12.tar.gz
+format_version: 1.0.0
+name: controller
+namespace: ansible
+server: https://console.redhat.com/api/automation-hub/content/published/
+signatures:
+- pubkey_fingerprint: 39B5D759361A97464C564A8FE1A4BD708A828AAD
+  pulp_created: '2024-09-20T07:39:53.373663Z'
+  signature: '-----BEGIN PGP SIGNATURE-----
+
+    Version: GnuPG v1
+
+
+    iQIcBAABCAAGBQJm7Sa5AAoJEOGkvXCKgoqt880P+wWLI5kCCeE8qsuMOrb91SV/
+
+    vp8ZpoY+he8u85U3dSKCgYda/WHHZTBB8BmpiWluCUxihzMclD/91hDpepXwCn8i
+
+    I1WRIiQQJ3llv9ViD+REBuo89hTPqV/wOmj+WTWtvaxJwKP9AowG+YBpyWiW11So
+
+    SseR3dZjdgzuI61Rghe0rpKurTuDaOUptyQRbkOPZ6sVddM9+lJtF1pe/+KKzNtn
+
+    8uM/J+LenwUPts9RXYAWTA1G0vbhoS3P6swpicjdbF+opK0umGWpho2DvYSEG4Jx
+
+    mwBN0AGxoIH3wOo32155qN171ehRu5CsRCIkyhxqgg4Maw5OhPIrc1OOs+hMq6vV
+
+    /To4fTsOhqkLTgvsmEcmlUs80Dh49UwsAcMSKqUEfmel5/ROtbE7DRVREyRyr1kO
+
+    alP2422txj0XlZYTUZgDELERo3MXycQKc/foBl8cfJ1ZT5jMyc7Ngfc49rB3V/rZ
+
+    4QJfF2LHIcexXXS8cm1xwl2pJ/QBtx+o1flMJJ20jlc+k2PZe93NKeSByrDaH1vP
+
+    iYbXBeQnLCpt2wKJT4lvQ+uGE60q3o+5s8LB3YwdgRme2Qv+J5Fzz9102M005zis
+
+    XzLxs0DdasZtAlRakCII/txI16wg6DwqVxzYII1gMLOIcncjuOQBDlpw9XQxUpOo
+
+    R5p8b5IjwDzrti1AYMZK
+
+    =NOkX
+
+    -----END PGP SIGNATURE-----
+
+    '
+  signing_service: null
+version: 4.5.12
+version_url: /api/automation-hub/content/published/v3/plugin/ansible/content/published/collections/index/ansible/controller/versions/4.5.12/

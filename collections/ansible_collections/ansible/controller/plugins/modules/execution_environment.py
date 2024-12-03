@@ -33,6 +33,7 @@ options:
     image:
       description:
         - The fully qualified url of the container image.
+      required: True
       type: str
     description:
       description:
@@ -78,7 +79,7 @@ def main():
     argument_spec = dict(
         name=dict(required=True),
         new_name=dict(),
-        image=dict(),
+        image=dict(required=True),
         description=dict(),
         organization=dict(),
         credential=dict(),

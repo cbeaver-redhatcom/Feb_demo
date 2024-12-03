@@ -13,32 +13,39 @@ def test_peers_adding_and_removing(run_module, admin_user):
     with override_settings(IS_K8S=True):
         result = run_module(
             'instance',
-            {'hostname': 'hopnode', 'node_type': 'hop', 'node_state': 'installed', 'listener_port': 6789},
+            {'hostname': 'hopnode1', 'node_type': 'hop', 'peers_from_control_nodes': True, 'node_state': 'installed', 'listener_port': 27199},
             admin_user,
         )
         assert result['changed']
 
-        hop_node = Instance.objects.get(pk=result.get('id'))
+        hop_node_1 = Instance.objects.get(pk=result.get('id'))
 
-        assert hop_node.node_type == 'hop'
-
-        address = hop_node.receptor_addresses.get(pk=result.get('id'))
-        assert address.port == 6789
+        assert hop_node_1.peers_from_control_nodes is True
+        assert hop_node_1.node_type == 'hop'
 
         result = run_module(
             'instance',
-            {'hostname': 'executionnode', 'node_type': 'execution', 'node_state': 'installed', 'peers': ['hopnode']},
+            {'hostname': 'hopnode2', 'node_type': 'hop', 'peers_from_control_nodes': True, 'node_state': 'installed', 'listener_port': 27199},
+            admin_user,
+        )
+        assert result['changed']
+
+        hop_node_2 = Instance.objects.get(pk=result.get('id'))
+
+        result = run_module(
+            'instance',
+            {'hostname': 'executionnode', 'node_type': 'execution', 'node_state': 'installed', 'listener_port': 27199, 'peers': ['hopnode1', 'hopnode2']},
             admin_user,
         )
         assert result['changed']
 
         execution_node = Instance.objects.get(pk=result.get('id'))
 
-        assert set(execution_node.peers.all()) == {address}
+        assert set(execution_node.peers.all()) == {hop_node_1, hop_node_2}
 
         result = run_module(
             'instance',
-            {'hostname': 'executionnode', 'node_type': 'execution', 'node_state': 'installed', 'peers': []},
+            {'hostname': 'executionnode', 'node_type': 'execution', 'node_state': 'installed', 'listener_port': 27199, 'peers': []},
             admin_user,
         )
 

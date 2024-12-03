@@ -27,7 +27,7 @@ This collection should be installed from [Content Hub](https://cloud.redhat.com/
 ## Running
 
 Non-deprecated modules in this collection have no Python requirements, but
-may require the AWX CLI
+may require the official [AWX CLI](https://docs.ansible.com/ansible-tower/latest/html/towercli/index.html)
 in the future. The `DOCUMENTATION` for each module will report this.
 
 You can specify authentication by a combination of either:
@@ -36,7 +36,8 @@ You can specify authentication by a combination of either:
  - host, OAuth2 token
 
 The OAuth2 token is the preferred method. You can obtain a token via the
-``login`` command with the AWX CLI.
+AWX CLI [login](https://docs.ansible.com/ansible-tower/latest/html/towercli/reference.html#awx-login)
+command.
 
 These can be specified via (from highest to lowest precedence):
 

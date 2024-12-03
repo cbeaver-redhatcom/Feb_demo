@@ -50,11 +50,10 @@ no_endpoint_for_module = [
 extra_endpoints = {
     'bulk_job_launch': '/api/v2/bulk/job_launch/',
     'bulk_host_create': '/api/v2/bulk/host_create/',
-    'bulk_host_delete': '/api/v2/bulk/host_delete/',
 }
 
 # Global module parameters we can ignore
-ignore_parameters = ['state', 'new_name', 'update_secrets', 'copy_from', 'is_internal']
+ignore_parameters = ['state', 'new_name', 'update_secrets', 'copy_from']
 
 # Some modules take additional parameters that do not appear in the API
 # Add the module name as the key with the value being the list of params to ignore
@@ -248,7 +247,7 @@ def test_completeness(collection_import, request, admin_user, job_template, exec
         singular_endpoint = '{0}'.format(endpoint)
         if singular_endpoint.endswith('ies'):
             singular_endpoint = singular_endpoint[:-3]
-        elif singular_endpoint != 'settings' and singular_endpoint.endswith('s'):
+        if singular_endpoint != 'settings' and singular_endpoint.endswith('s'):
             singular_endpoint = singular_endpoint[:-1]
         module_name = '{0}'.format(singular_endpoint)
 
