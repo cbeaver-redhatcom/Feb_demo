@@ -5,4 +5,4 @@ collections:
   - name: community.general
   - name: amazon.aws
   - name: ansible.controller
-    version: 4.5.13
+    version: 4.5.11
