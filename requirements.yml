@@ -1,5 +1,8 @@
 ---
 collections:
+  - name: ansible.posix
+  - name: cyberark.pas
   - name: community.general
-    version: ">=7.0.0"
   - name: amazon.aws
+  - name: ansible.controller
+    version: 4.5.13
